@@ -24,5 +24,4 @@ plt.xlabel('True Values')
 plt.ylabel('Predictions')
 plt.show()
 
-accuracy = Log_model.score(x_RealData, y_RealData)
-print(f"Accuracy: {accuracy}")
+
