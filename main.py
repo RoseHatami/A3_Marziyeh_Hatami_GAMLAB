@@ -11,7 +11,7 @@ x_RealData = data.data
 y_RealData = data.target
 
 
-x_LRTest,x_LRTrain,y_LRTest,y_LRTrain=train_test_split(x_RealData,y,test_size=0.25)
+x_LRTest,x_LRTrain,y_LRTest,y_LRTrain=train_test_split(x_RealData,y,test_size=0.25,random_state=42)
 
 Log_model = LogisticRegression(max_iter=10000)
 
