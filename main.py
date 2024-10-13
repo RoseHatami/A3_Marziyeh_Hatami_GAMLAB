@@ -11,17 +11,52 @@ x_RealData = data.data
 y_RealData = data.target
 
 
-x_LRTest,x_LRTrain,y_LRTest,y_LRTrain=train_test_split(x_RealData,y,test_size=0.25,random_state=42)
+x_Test,x_Train,y_Test,y_Train=train_test_split(x_RealData,y_RealData,test_size=0.25,random_state=42)
 
 Log_model = LogisticRegression(max_iter=10000)
 
-Log_model.fit(x_LRTrain, y_LRTrain)
+Log_model.fit(x_Train, y_Train)
 
-y_LRPred=Log_model.predict(x_LRTest)
+y_LRPred=Log_model.predict(x_Test)
 
-plt.scatter(y_LRTest, y_LRPred)
+plt.scatter(y_Test, y_LRPred)
 plt.xlabel('True Values')
 plt.ylabel('Predictions')
 plt.show()
 
+
+
+
+
+
+
+
+from sklearn.model_selection import KFold
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import mean_squared_error
+
+
+KNN_model=KNeighborsRegressor(n_neighbors=5)
+
+KNN_kf= KFold(n_splits=5 ,shuffle=True ,random_state=42) 
+
+KNN_params={'n_neighbors':[1,2,3,5,10],
+            'metric':['minkowski' , 'manhattan'] }
+
+
+KNN_gs=GridSearchCV(KNN_model,KNN_params,cv=KNN_kf,scoring='neg_mean_squared_error')
+
+KNN_gs.fit(x_RealData,y_RealData)
+
+y_KNNPred=KNN_gs.predict(x_Test)
+
+mse = mean_squared_error(y_Test, y_KNNPred)
+print("Mean Squared Error:", mse)
+
+plt.scatter(y_Test, y_LRPred)
+plt.xlabel('True Values')
+plt.ylabel('Predictions')
+plt.title('KNN Predictions vs True Values')
+plt.show()
 
