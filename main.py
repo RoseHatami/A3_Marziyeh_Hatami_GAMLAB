@@ -19,6 +19,9 @@ Log_model.fit(x_Train, y_Train)
 
 y_LRPred=Log_model.predict(x_Test)
 
+acc=accuracy_score(y_Test, y_LRPred)
+print('accuracy: ', acc)
+
 plt.scatter(y_Test, y_LRPred)
 plt.xlabel('True Values')
 plt.ylabel('Predictions')
