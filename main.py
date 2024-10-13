@@ -32,12 +32,12 @@ plt.show()
 
 
 from sklearn.model_selection import KFold
-from sklearn.neighbors import KNeighborsRegressor
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import mean_squared_error
 
 
-KNN_model=KNeighborsRegressor(n_neighbors=5)
+KNN_model=KNeighborsClassifier(n_neighbors=5)
 
 KNN_kf= KFold(n_splits=5 ,shuffle=True ,random_state=42) 
 
@@ -45,18 +45,17 @@ KNN_params={'n_neighbors':[1,2,3,5,10],
             'metric':['minkowski' , 'manhattan'] }
 
 
-KNN_gs=GridSearchCV(KNN_model,KNN_params,cv=KNN_kf,scoring='neg_mean_squared_error')
+KNN_gs=GridSearchCV(KNN_model,KNN_params,cv=KNN_kf,scoring='accuracy')
 
 KNN_gs.fit(x_RealData,y_RealData)
 
 y_KNNPred=KNN_gs.predict(x_Test)
 
-mse = mean_squared_error(y_Test, y_KNNPred)
-print("Mean Squared Error:", mse)
+acc=accuracy_score(y_Test, y_KNNPred)
+print('accuracy: ', acc)
 
-plt.scatter(y_Test, y_LRPred)
+plt.scatter(y_Test, y_KNNPred)
 plt.xlabel('True Values')
 plt.ylabel('Predictions')
 plt.title('KNN Predictions vs True Values')
 plt.show()
-
