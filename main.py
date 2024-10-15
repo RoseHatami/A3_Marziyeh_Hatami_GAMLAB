@@ -1,4 +1,3 @@
-
 '''
 APM:
 
@@ -46,6 +45,17 @@ print('accuracy: ', acc)
 #*******
 from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import KFold
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import mean_squared_error
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.svm import SVR
+
+
+
+
+
 kf= KFold(n_splits=5 ,shuffle=True ,random_state=42) 
 model=LogisticRegression(max_iter=10000)
 myparams={} #logistic regression niaz b parameter nadare ama KNN, DT , RF , SVR niaz darand
@@ -56,49 +66,29 @@ gs.best_params_
 
 #haminakr ro baraye done done model anjam bedid ama model va params ro taghir bdid
 #******
-
-
-
-
-
-
-plt.scatter(y_Test, y_LRPred)
-plt.xlabel('True Values')
-plt.ylabel('Predictions')
-plt.show()
-
-
-
-
-
-
-
-
-from sklearn.model_selection import KFold
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import mean_squared_error
-
-
 KNN_model=KNeighborsClassifier(n_neighbors=5)
-
-KNN_kf= KFold(n_splits=5 ,shuffle=True ,random_state=42) 
-
+#KNN_kf= KFold(n_splits=5 ,shuffle=True ,random_state=42) 
 KNN_params={'n_neighbors':[1,2,3,5,10],
-            'metric':['minkowski' , 'manhattan'] }
-
-
-KNN_gs=GridSearchCV(KNN_model,KNN_params,cv=KNN_kf,scoring='accuracy')
-
+            'metric':['minkowski' , 'manhattan','euclidean'] }
+KNN_gs=GridSearchCV(KNN_model,KNN_params,cv=kf,scoring='accuracy')
 KNN_gs.fit(x_RealData,y_RealData)
+#y_KNNPred=KNN_gs.predict(x_Test)
+#acc=accuracy_score(y_Test, y_KNNPred)
+#print('accuracy: ', acc)
+KNN_gs.best_params_
+KNN_gs.best_params_
 
-y_KNNPred=KNN_gs.predict(x_Test)
 
-acc=accuracy_score(y_Test, y_KNNPred)
-print('accuracy: ', acc)
+DT_model=DecisionTreeRegressor(random_state=42)
+DT_params={ 'max_depth':[1,2,3,4,5,6,7,10]}
+DT_gs=GridSearchCV(DT_model, DT_params,cv=kf,scoring='neg_mean_absolute_percentage_error')
+DT_gs.fit(x,y)
+DT_gs.best_params_
+DT_gs.best_params_
 
-plt.scatter(y_Test, y_KNNPred)
-plt.xlabel('True Values')
-plt.ylabel('Predictions')
-plt.title('KNN Predictions vs True Values')
-plt.show()
+
+svr_model=SVR()
+svr_params={'kernel':['poly','rbf','linear'],
+           'C':[0.001,0.01,1]}
+svr_gs=GridSearchCV(svr_model, svr_params,cv=kf,scoring='accuracy')
+svr_gs.fit(x,y)
