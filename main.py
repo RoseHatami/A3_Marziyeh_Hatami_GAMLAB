@@ -1,10 +1,9 @@
 '''
 APM:
 
-bejaye estefade az train test split az crossvalidation baayd estefade konid
-baratoon dar khate 45 ta 58 yek mesal neveshtam va baraye KNN , DT , RF , SVR ham bznid
-dar nahayat dar akahre codede moghayese konid har 5 model ra
-
+Bande khedmateton nomre dadam ama lotf konid hatman bad az dore zaman bzarid
+va takmil konid
+moafagh bashid
 
 '''
 
